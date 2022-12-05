@@ -1,0 +1,19 @@
+{{>partial_header}}
+
+import os
+
+
+def api_client_default_timeout(request):
+    """
+    Decorator responsible for adding defaut timeout if not specified.
+
+    """
+
+    def wrapped(self, method: str, url: str, **kwargs):
+        if "timeout" not in kwargs:
+            kwargs["timeout"] = os.environ.get("{{packageName}}_REQUEST_TIMEOUT".upper(), 15)
+
+        return request(self, method, url, **kwargs)
+
+
+    return wrapped

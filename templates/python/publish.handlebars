@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+publish_prod () {
+    poetry config repositories.codeartifact-prod `aws codeartifact get-repository-endpoint --domain backmarket --domain-owner 115816763580 --region eu-west-1 --repository python-prod --format pypi --query repositoryEndpoint --output text`
+    poetry config http-basic.codeartifact-prod aws `aws codeartifact get-authorization-token --domain backmarket --domain-owner 115816763580 --region eu-west-1 --query authorizationToken --output text`
+    poetry publish --repository codeartifact-prod
+}
+
+poetry build
+publish_prod

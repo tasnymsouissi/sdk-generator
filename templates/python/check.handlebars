@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+if [ -z "${CIRCLE_TAG}" ]
+then
+  echo "Not on a CI tag build, aborting release."
+  exit 1
+fi
+if [ "$(poetry version -s)" != "${CIRCLE_TAG}" ]
+then
+  echo "Lib version $(poetry version -s) does not match CI tag ${CIRCLE_TAG}, aborting."
+  exit 1
+fi

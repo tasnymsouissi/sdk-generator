@@ -1,0 +1,10 @@
+[tox]
+envlist = py310
+
+[testenv]
+passenv = PYTHON_VERSION
+deps=-r{toxinidir}/requirements.txt
+     -r{toxinidir}/test-requirements.txt
+
+commands=
+   {{#unless useNose}}sh -c 'pytest --cov={{{packageName}}} {posargs}; ret=$?; [ $ret = 5 ] && exit 0 || exit $ret'{{/unless}}{{#if useNose}}nosetests{{/if}}
